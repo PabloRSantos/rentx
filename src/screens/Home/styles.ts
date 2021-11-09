@@ -12,6 +12,7 @@ export const Header = styled.View`
     font-family: ${({ theme }) => theme.fonts.secondary_600};
     justify-content: flex-end;
     padding: 32px 24px;
+    background-color: ${({ theme }) => theme.colors.header};
 `
 
 export const HeaderContent = styled.View`

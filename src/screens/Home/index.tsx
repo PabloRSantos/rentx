@@ -1,8 +1,9 @@
 import React from "react";
 import { StatusBar } from "react-native";
 import * as S from "./styles";
-import Logo from '../../assets/logo.svg'
+import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
+import { Car } from "../../components/Car";
 
 export const Home: React.FC = () => {
   return (
@@ -18,6 +19,30 @@ export const Home: React.FC = () => {
           <S.TotalCars>Total de 12 carros</S.TotalCars>
         </S.HeaderContent>
       </S.Header>
+
+      <Car
+        data={{
+          thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
+          name: "Audi",
+          brand: "RS 5 Coupé",
+          rent: {
+            price: 120,
+            period: "Ao dia",
+          },
+        }}
+      />
+
+      <Car
+        data={{
+          thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
+          name: "Audi",
+          brand: "RS 5 Coupé",
+          rent: {
+            price: 120,
+            period: "Ao dia",
+          },
+        }}
+      />
     </S.Container>
   );
 };
