@@ -9,6 +9,7 @@ import gasolineSvg from '../../assets/gasoline.svg'
 import exchangeSvg from '../../assets/exchange.svg'
 import peopleSvg from '../../assets/people.svg'
 import * as S from "./styles";
+import { Button } from "../../components/Button";
 
 export const CarDetails: React.FC = () => {
   return (
@@ -52,6 +53,10 @@ export const CarDetails: React.FC = () => {
           officiis ut?
         </S.About>
       </S.Content>
+
+      <S.Footer>
+        <Button title="Confirmar" />
+      </S.Footer>
     </S.Container>
   );
 };
