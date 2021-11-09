@@ -20,28 +20,22 @@ export const Home: React.FC = () => {
         </S.HeaderContent>
       </S.Header>
 
-      <Car
-        data={{
-          thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
-          name: "Audi",
-          brand: "RS 5 Coupé",
-          rent: {
-            price: 120,
-            period: "Ao dia",
-          },
-        }}
-      />
-
-      <Car
-        data={{
-          thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
-          name: "Audi",
-          brand: "RS 5 Coupé",
-          rent: {
-            price: 120,
-            period: "Ao dia",
-          },
-        }}
+      <S.CarList
+        data={[1, 2, 3, 4, 5, 6, 7]}
+        keyExtractor={(item) => String(item)}
+        renderItem={({ item }) => (
+          <Car
+            data={{
+              thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
+              name: "Audi",
+              brand: "RS 5 Coupé",
+              rent: {
+                price: 120,
+                period: "Ao dia",
+              },
+            }}
+          />
+        )}
       />
     </S.Container>
   );
