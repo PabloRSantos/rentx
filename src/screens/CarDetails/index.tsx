@@ -22,7 +22,7 @@ export const CarDetails: React.FC = () => {
   }
 
   function handleConfirmRental() {
-    navigation.navigate("Scheduling");
+    navigation.navigate("Scheduling", { car });
   }
 
   return (
