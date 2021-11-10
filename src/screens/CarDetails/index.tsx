@@ -10,8 +10,16 @@ import exchangeSvg from '../../assets/exchange.svg'
 import peopleSvg from '../../assets/people.svg'
 import * as S from "./styles";
 import { Button } from "../../components/Button";
+import { useNavigation } from '@react-navigation/native'
+
 
 export const CarDetails: React.FC = () => {
+  const navigation = useNavigation()
+
+  function handleConfirmRental() {
+    navigation.navigate('Scheduling')
+  }
+
   return (
     <S.Container>
       <S.Header>
@@ -55,7 +63,7 @@ export const CarDetails: React.FC = () => {
       </S.Content>
 
       <S.Footer>
-        <Button title="Confirmar" />
+        <Button onPress={handleConfirmRental} title="Escolher período de aluguel" />
       </S.Footer>
     </S.Container>
   );

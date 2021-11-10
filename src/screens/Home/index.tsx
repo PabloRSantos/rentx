@@ -4,8 +4,15 @@ import * as S from "./styles";
 import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Car } from "../../components/Car";
+import { useNavigation } from '@react-navigation/native'
 
 export const Home: React.FC = () => {
+  const navigation = useNavigation()
+
+  function handleCarDetails() {
+    navigation.navigate('CarDetails')
+  }
+
   return (
     <S.Container>
       <StatusBar
@@ -25,6 +32,7 @@ export const Home: React.FC = () => {
         keyExtractor={(item) => String(item)}
         renderItem={({ item }) => (
           <Car
+            onPress={handleCarDetails}
             data={{
               thumbnail: "https://pngimg.com/uploads/audi/audi_PNG99491.png",
               name: "Audi",
