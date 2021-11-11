@@ -7,6 +7,7 @@ import { Scheduling } from '../screens/Scheduling'
 import { SchedulingComplete } from '../screens/SchedulingComplete'
 import { SchedulingDetails } from '../screens/SchedulingDetails'
 import { CarDTO } from '../dtos/CarDTO'
+import { MyCars } from '../screens/MyCars'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -17,6 +18,7 @@ declare global {
         CarDetails: { car: CarDTO };
         Scheduling: { car: CarDTO };
         SchedulingComplete: undefined;
+        MyCars: undefined;
         SchedulingDetails: { car: CarDTO, dates: string[], formattedDates: string[] };
       }
     }
@@ -30,6 +32,7 @@ export const StackRoutes = () => {
             <Screen name="Scheduling" component={Scheduling} />
             <Screen name="SchedulingComplete" component={SchedulingComplete} />
             <Screen name="SchedulingDetails" component={SchedulingDetails} />
+            <Screen name="MyCars" component={MyCars} />
         </Navigator>
     )
 }

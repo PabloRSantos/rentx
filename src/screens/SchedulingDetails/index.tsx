@@ -35,6 +35,7 @@ export const SchedulingDetails: React.FC = () => {
       ...schedulesByCar.data.unavailable_dates,
       ...dates
     ]
+    await api.post(`/schedules_byuser`, { car, user_id: 1, startDate: formattedDates[0], endDate: formattedDates[1] })
     api.put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
       .then(() => navigation.navigate('SchedulingComplete'))
       .catch(() => Alert.alert('Não foi possivel confirmar o agendamento'))

@@ -8,8 +8,11 @@ import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
 import { Load } from "../../components/Load";
+import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from "styled-components/native";
 
 export const Home: React.FC = () => {
+  const theme = useTheme()
   const navigation = useNavigation();
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +35,11 @@ export const Home: React.FC = () => {
     navigation.navigate("CarDetails", { car });
   }
 
+  function handleOpenMyCars() {
+    navigation.navigate("MyCars");
+  }
+
+
   return (
     <S.Container>
       <StatusBar
@@ -42,7 +50,7 @@ export const Home: React.FC = () => {
       <S.Header>
         <S.HeaderContent>
           <Logo width={RFValue(108)} height={RFValue(12)} />
-          <S.TotalCars>Total de 12 carros</S.TotalCars>
+          <S.TotalCars>Total de {cars.length} carros</S.TotalCars>
         </S.HeaderContent>
       </S.Header>
 
@@ -57,6 +65,10 @@ export const Home: React.FC = () => {
           )}
         />
       )}
+
+      <S.MyCarsButton onPress={handleOpenMyCars}>
+            <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
+      </S.MyCarsButton>
     </S.Container>
   );
 };
