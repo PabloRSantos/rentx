@@ -48,7 +48,5 @@ export const MyCarsButton = styled(RectButton)`
     justify-content: center;
     align-items: center;
     background-color: ${({ theme }) => theme.colors.main};
-    position: absolute;
-    bottom: 13px;
-    right: 22px;
+
 `

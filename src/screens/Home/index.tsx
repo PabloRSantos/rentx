@@ -10,12 +10,40 @@ import { CarDTO } from "../../dtos/CarDTO";
 import { Load } from "../../components/Load";
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from "styled-components/native";
+import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring } from 'react-native-reanimated'
+import { PanGestureHandler } from "react-native-gesture-handler";
+
+const ButtonAnimated = Animated.createAnimatedComponent(S.MyCarsButton)
 
 export const Home: React.FC = () => {
   const theme = useTheme()
   const navigation = useNavigation();
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const positionY = useSharedValue(0)
+  const positionX = useSharedValue(0)
+
+  const myCarsButtonStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: positionX.value },
+      { translateY: positionY.value },
+    ]
+  }))
+
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart(_, ctx: any) {
+      ctx.positionX = positionX.value
+      ctx.positionY = positionY.value
+    },
+    onActive(event, ctx: any){
+      positionX.value = ctx.positionX + event.translationX
+      positionY.value = ctx.positionY + event.translationY
+    },
+    onEnd(){
+      positionX.value = withSpring(0)
+      positionY.value = withSpring(0)
+    }
+  })
 
   useEffect(() => {
     async function fetchCars() {
@@ -66,9 +94,13 @@ export const Home: React.FC = () => {
         />
       )}
 
-      <S.MyCarsButton onPress={handleOpenMyCars}>
-            <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
-      </S.MyCarsButton>
+      <PanGestureHandler onGestureEvent={onGestureEvent}>
+        <Animated.View style={[myCarsButtonStyle, { position: 'absolute', bottom: 13, right: 12 }]}>
+          <ButtonAnimated onPress={handleOpenMyCars}>
+                <Ionicons name="ios-car-sport" size={32} color={theme.colors.shape} />
+          </ButtonAnimated>
+        </Animated.View>
+      </PanGestureHandler>
     </S.Container>
   );
 };
