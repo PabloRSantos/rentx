@@ -8,7 +8,7 @@ import { CarDTO } from "../../dtos/CarDTO";
 import { api } from "../../services/api";
 import * as S from "./styles";
 import { AntDesign } from "@expo/vector-icons";
-import { Load } from "../../components/Load";
+import { LoadAnimation } from "../../components/LoadAnimation";
 
 interface CarProps {
   id: string;
@@ -65,7 +65,7 @@ export const MyCars: React.FC = () => {
         </S.Appointments>
 
         {loading ? (
-          <Load />
+          <LoadAnimation />
         ) : (
           <FlatList
             data={cars}

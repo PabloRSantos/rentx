@@ -7,7 +7,7 @@ import { Car } from "../../components/Car";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
-import { Load } from "../../components/Load";
+import { LoadAnimation } from "../../components/LoadAnimation";
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from "styled-components/native";
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring } from 'react-native-reanimated'
@@ -89,7 +89,7 @@ export const Home: React.FC = () => {
       </S.Header>
 
       {loading ? (
-        <Load />
+        <LoadAnimation />
       ) : (
         <S.CarList
           data={cars}
