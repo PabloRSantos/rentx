@@ -45,7 +45,7 @@ export const SchedulingDetails: React.FC = () => {
     });
     api
       .put(`/schedules_bycars/${car.id}`, { id: car.id, unavailable_dates })
-      .then(() => navigation.navigate("SchedulingComplete"))
+      .then(() => navigation.navigate("Confirmation", { title: 'Carro alugado', message: 'Agora você só precisa ir\naté a concessionário da RENTX\n pegar o seu automóvel' }))
       .catch(() => {
         setLoading(false)
         Alert.alert("Não foi possivel confirmar o agendamento")

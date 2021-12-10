@@ -35,14 +35,19 @@ export const SignUpSecondStep: React.FC = () => {
   }
 
   function handleRegister() {
-    if(!password || !passwordConfirm) {
-      return Alert.alert('Informe a senha e a confirmação')
+    if (!password || !passwordConfirm) {
+      return Alert.alert("Informe a senha e a confirmação");
     }
 
-    if(password !== passwordConfirm) {
-      return Alert.alert('As senhas não são iguais')
+    if (password !== passwordConfirm) {
+      return Alert.alert("As senhas não são iguais");
     }
 
+    navigation.navigate("Confirmation", {
+      title: "Conta criada!",
+      message: "Agora é só fazer login\ne aproveitar",
+      nextScreenRoute: "SignIn",
+    });
   }
 
   return (
@@ -79,7 +84,11 @@ export const SignUpSecondStep: React.FC = () => {
               value={passwordConfirm}
             />
           </S.Form>
-          <Button title="Cadastrar" color={theme.colors.success} onPress={handleRegister} />
+          <Button
+            title="Cadastrar"
+            color={theme.colors.success}
+            onPress={handleRegister}
+          />
         </S.Container>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
