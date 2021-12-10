@@ -18,8 +18,8 @@ export const Car: React.FC<Props> = ({ data, ...rest }) => {
 
         <S.About>
           <S.Rent>
-            <S.Period>{data.rent.period}</S.Period>
-            <S.Price>R$ {data.rent.price}</S.Price>
+            <S.Period>{data.period}</S.Period>
+            <S.Price>R$ {data.price}</S.Price>
           </S.Rent>
 
           <S.Type>

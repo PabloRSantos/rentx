@@ -4,26 +4,26 @@ import { Bullet } from "../Bullet";
 import * as S from "./styles";
 
 interface Props {
-  imagesUrl: string[];
+  imagesUrl: { id: string; photo: string }[];
 }
 
 interface ChangeImageProps {
-    viewableItems: ViewToken[];
-    changed: ViewToken[];
+  viewableItems: ViewToken[];
+  changed: ViewToken[];
 }
 
 export const ImageSlider: React.FC<Props> = ({ imagesUrl }) => {
-  const [imageIndex, setImageIndex] = useState(0)
+  const [imageIndex, setImageIndex] = useState(0);
 
   const indexChanged = useRef((info: ChangeImageProps) => {
-    setImageIndex(info.viewableItems[0].index!)
-  })
+    setImageIndex(info.viewableItems[0].index!);
+  });
 
   return (
     <S.Container>
       <S.ImageIndexes>
-        {imagesUrl.map((_, index) => (
-          <Bullet key={String(index)} active={index === imageIndex} />
+        {imagesUrl.map((item, index) => (
+          <Bullet key={item.id} active={index === imageIndex} />
         ))}
       </S.ImageIndexes>
 
@@ -31,11 +31,11 @@ export const ImageSlider: React.FC<Props> = ({ imagesUrl }) => {
         data={imagesUrl}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(key) => key}
+        keyExtractor={(key) => key.id}
         onViewableItemsChanged={indexChanged.current}
         renderItem={({ item }) => (
           <S.CarImageWrapper>
-            <S.CarImage source={{ uri: item }} resizeMode="contain" />
+            <S.CarImage source={{ uri: item.photo }} resizeMode="contain" />
           </S.CarImageWrapper>
         )}
       />
