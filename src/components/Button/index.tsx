@@ -7,14 +7,15 @@ import * as S from './styles';
 interface Props extends RectButtonProps {
   title: string
   color?: string
+  light?: boolean
   loading?: boolean
 }
 
-export const Button: React.FC<Props> = ({ title, color, loading, enabled = true, ...rest }) => {
+export const Button: React.FC<Props> = ({ title, color, loading, enabled = true, light = false, ...rest }) => {
   const theme = useTheme()
   return (
     <S.Container {...rest} color={color} enabled={enabled} style={{ opacity: (!enabled || loading) ? .5 : 1 }}>
-      {loading ? <ActivityIndicator color={theme.colors.shape} /> : <S.Title>{title}</S.Title>}
+      {loading ? <ActivityIndicator color={theme.colors.shape} /> : <S.Title light={light} >{title}</S.Title>}
     </S.Container>
   );
 };
