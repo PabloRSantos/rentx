@@ -12,8 +12,10 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/core";
+import { useAuth } from "../../hooks/auth";
 
 export const Splash: React.FC = () => {
+  const { user } = useAuth()
   const navigation = useNavigation()
   const splashAnimation = useSharedValue(0);
 
@@ -31,7 +33,7 @@ export const Splash: React.FC = () => {
   }));
 
   function startApp( ) {
-    navigation.navigate('Home')
+    navigation.navigate(user ? 'Home' : 'SignIn')
   }
 
   useEffect(() => {

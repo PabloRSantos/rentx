@@ -2,12 +2,7 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { Home } from "../screens/Home";
-import { CarDetails } from "../screens/CarDetails";
-import { Scheduling } from "../screens/Scheduling";
 import { Confirmation } from "../screens/Confirmation";
-import { SchedulingDetails } from "../screens/SchedulingDetails";
-import { CarDTO } from "../dtos/CarDTO";
-import { MyCars } from "../screens/MyCars";
 import { Splash } from "../screens/Splash";
 import { SignIn } from "../screens/SignIn";
 import { SignUpFirstStep } from "../screens/SignUp/SignUpFirstStep";
@@ -22,21 +17,13 @@ declare global {
       SignUpSecondStep: {
         user: { email: string; name: string; driverLicense: string };
       };
-      Home: undefined;
-      CarDetails: { car: CarDTO };
-      Scheduling: { car: CarDTO };
-      Confirmation: { title: string; message: string; nextScreenRoute?: string };
-      MyCars: undefined;
-      SchedulingDetails: {
-        car: CarDTO;
-        dates: string[];
-        formattedDates: string[];
-      };
+      SignIn: undefined
+      Splash: undefined
     }
   }
 }
 
-export const StackRoutes = () => {
+export const AuthRoutes = () => {
   return (
     <Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
       <Screen name="Splash" component={Splash} />
@@ -48,11 +35,7 @@ export const StackRoutes = () => {
         component={Home}
         options={{ gestureEnabled: false }}
       />
-      <Screen name="CarDetails" component={CarDetails} />
-      <Screen name="Scheduling" component={Scheduling} />
       <Screen name="Confirmation" component={Confirmation} />
-      <Screen name="SchedulingDetails" component={SchedulingDetails} />
-      <Screen name="MyCars" component={MyCars} />
     </Navigator>
   );
 };
