@@ -32,7 +32,6 @@ export const SignIn: React.FC = () => {
       await schema.validate({ email, password });
 
       await signIn({ email, password })
-      Alert.alert("Tudo certo!");
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("Opa", error.message);
