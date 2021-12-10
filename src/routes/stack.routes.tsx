@@ -19,7 +19,7 @@ declare global {
     namespace ReactNavigation {
       interface RootParamList {
         SignUpFirstStep: undefined;
-        SignUpSecondStep: undefined;
+        SignUpSecondStep: { user: { email: string, name: string, driverLicense: string } };
         Home: undefined;
         CarDetails: { car: CarDTO };
         Scheduling: { car: CarDTO };
