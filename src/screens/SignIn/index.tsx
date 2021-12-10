@@ -6,11 +6,17 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import * as S from "./styles";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
 
 export const SignIn: React.FC = () => {
   const theme = useTheme();
+  const navigation = useNavigation()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+  function handleNewAccount() {
+    navigation.navigate('SignUpFirstStep')
+  }
 
   async function handleSignIn() {
     try {
@@ -80,7 +86,7 @@ export const SignIn: React.FC = () => {
             />
             <Button
               title="Criar conta gratuita"
-              onPress={() => {}}
+              onPress={handleNewAccount}
               enabled
               loading={false}
               color={theme.colors.background_secondary}

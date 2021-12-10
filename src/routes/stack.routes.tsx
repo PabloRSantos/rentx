@@ -10,12 +10,14 @@ import { CarDTO } from '../dtos/CarDTO'
 import { MyCars } from '../screens/MyCars'
 import { Splash } from '../screens/Splash'
 import { SignIn } from '../screens/SignIn'
+import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep'
 
 const { Navigator, Screen } = createStackNavigator()
 
 declare global {
     namespace ReactNavigation {
       interface RootParamList {
+        SignUpFirstStep: undefined;
         Home: undefined;
         CarDetails: { car: CarDTO };
         Scheduling: { car: CarDTO };
@@ -28,9 +30,10 @@ declare global {
 
 export const StackRoutes = () => {
     return (
-        <Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
+        <Navigator initialRouteName="SignUpFirstStep" screenOptions={{ headerShown: false }}>
             <Screen name="Splash" component={Splash} />
             <Screen name="SignIn" component={SignIn} />
+            <Screen name="SignUpFirstStep" component={SignUpFirstStep} />
             <Screen name="Home" component={Home} options={{ gestureEnabled: false }} />
             <Screen name="CarDetails" component={CarDetails} />
             <Screen name="Scheduling" component={Scheduling} />
