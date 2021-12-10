@@ -11,6 +11,7 @@ import { BackButton } from "../../../components/BackButton";
 import { Bullet } from "../../../components/Bullet";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
+import { api } from "../../../services/api";
 import * as S from "./styles";
 
 interface RouteParams {
@@ -43,11 +44,21 @@ export const SignUpSecondStep: React.FC = () => {
       return Alert.alert("As senhas não são iguais");
     }
 
-    navigation.navigate("Confirmation", {
-      title: "Conta criada!",
-      message: "Agora é só fazer login\ne aproveitar",
-      nextScreenRoute: "SignIn",
-    });
+    api
+      .post("/users", {
+        name: user.name,
+        email: user.email,
+        driver_license: user.driverLicense,
+        password,
+      })
+      .then(() => {
+        navigation.navigate("Confirmation", {
+          title: "Conta criada!",
+          message: "Agora é só fazer login\ne aproveitar",
+          nextScreenRoute: "SignIn",
+        });
+      })
+      .catch(() => Alert.alert("Opa", "Não foi possivel cadastrar"));
   }
 
   return (

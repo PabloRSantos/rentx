@@ -7,9 +7,11 @@ import { Input } from "../../components/Input";
 import * as S from "./styles";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 export const SignIn: React.FC = () => {
   const theme = useTheme();
+  const { signIn } = useAuth()
   const navigation = useNavigation()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,8 @@ export const SignIn: React.FC = () => {
       });
 
       await schema.validate({ email, password });
+
+      await signIn({ email, password })
       Alert.alert("Tudo certo!");
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
