@@ -7,8 +7,6 @@ import { Scheduling } from "../screens/Scheduling";
 import { Confirmation } from "../screens/Confirmation";
 import { SchedulingDetails } from "../screens/SchedulingDetails";
 import { CarDTO } from "../dtos/CarDTO";
-import { MyCars } from "../screens/MyCars";
-import { Splash } from "../screens/Splash";
 
 const { Navigator, Screen } = createStackNavigator();
 

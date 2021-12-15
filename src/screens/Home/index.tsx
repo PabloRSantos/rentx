@@ -41,27 +41,29 @@ export const Home: React.FC = () => {
   // })
 
   useEffect(() => {
+    let isMounted = true
+    
     async function fetchCars() {
       try {
         const response = await api.get("/cars");
-        setCars(response.data);
+        console.log(isMounted)
+        isMounted && setCars(response.data);
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false);
+        isMounted && setLoading(false);
       }
     }
+
     fetchCars();
+    return () => {
+      isMounted = false
+    }
   }, []);
 
   function handleCarDetails(car: CarDTO) {
     navigation.navigate("CarDetails", { car });
   }
-
-  function handleOpenMyCars() {
-    navigation.navigate("MyCars");
-  }
-
 
   return (
     <S.Container>

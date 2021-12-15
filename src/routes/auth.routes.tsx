@@ -1,7 +1,6 @@
 import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import { Home } from "../screens/Home";
 import { Confirmation } from "../screens/Confirmation";
 import { Splash } from "../screens/Splash";
 import { SignIn } from "../screens/SignIn";
