@@ -8,7 +8,6 @@ import * as S from "./styles";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../hooks/auth";
-import { database } from "../../database";
 
 export const SignIn: React.FC = () => {
   const theme = useTheme();
@@ -17,16 +16,6 @@ export const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    async function loadData() { 
-      const userCollection = database.get('users')
-      const users = userCollection.query().fetch()
-      console.log(users)
-    }
-
-    loadData()
-  }, [])
-  
   function handleNewAccount() {
     navigation.navigate('SignUpFirstStep')
   }
@@ -41,7 +30,7 @@ export const SignIn: React.FC = () => {
       });
 
       await schema.validate({ email, password });
-
+      
       await signIn({ email, password })
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
