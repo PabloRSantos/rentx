@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Keyboard, KeyboardAvoidingView, StatusBar } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
@@ -8,6 +8,7 @@ import * as S from "./styles";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../hooks/auth";
+import { database } from "../../database";
 
 export const SignIn: React.FC = () => {
   const theme = useTheme();
@@ -15,6 +16,16 @@ export const SignIn: React.FC = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    async function loadData() { 
+      const userCollection = database.get('users')
+      const users = userCollection.query().fetch()
+      console.log(users)
+    }
+
+    loadData()
+  }, [])
   
   function handleNewAccount() {
     navigation.navigate('SignUpFirstStep')
