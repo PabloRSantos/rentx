@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "react-native";
+import { Alert, StatusBar } from "react-native";
 import * as S from "./styles";
 import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/CarDTO";
 import { LoadAnimation } from "../../components/LoadAnimation";
+import { useNetInfo } from '@react-native-community/netinfo'
 
 // const ButtonAnimated = Animated.createAnimatedComponent(S.MyCarsButton)
 
@@ -15,6 +16,7 @@ export const Home: React.FC = () => {
   const navigation = useNavigation();
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const netInfo = useNetInfo()
   // const positionY = useSharedValue(0)
   // const positionX = useSharedValue(0)
 
@@ -60,6 +62,14 @@ export const Home: React.FC = () => {
       isMounted = false
     }
   }, []);
+
+  useEffect(() => {
+    if(netInfo.isConnected) {
+      Alert.alert('Você está On-Line')
+    } else {
+      Alert.alert('Você está Of-Line')
+    }
+  }, [netInfo.isConnected])
 
   function handleCarDetails(car: CarDTO) {
     navigation.navigate("CarDetails", { car });
