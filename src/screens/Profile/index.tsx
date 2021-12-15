@@ -9,18 +9,18 @@ import { Alert, Keyboard, KeyboardAvoidingView } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useAuth } from "../../hooks/auth";
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from "expo-image-picker";
 import { Button } from "../../components/Button";
-import * as Yup from 'yup'
+import * as Yup from "yup";
 
 export const Profile: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { user, signOut, updateUser } = useAuth();
-  const [avatar, setAvatar] = useState(user.avatar)
-  const [name, setName] = useState(user.name)
-  const [email, setEmail] = useState(user.email)
-  const [driverLicense, setDriverLicense] = useState(user.driver_license)
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit");
 
   function handleBack() {
@@ -32,39 +32,56 @@ export const Profile: React.FC = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 4],
-      quality: 1
-    })
+      quality: 1,
+    });
 
-    if(!result.cancelled && result.uri) {
-      setAvatar(result.uri)
+    if (!result.cancelled && result.uri) {
+      setAvatar(result.uri);
     }
   }
 
   async function handleProfileUpdate() {
     try {
       const schema = Yup.object().shape({
-        driverLicense: Yup.string().required('CNH é obrigatória'),
-        name: Yup.string().required('Nome é OBrigatório')
-      })
+        driverLicense: Yup.string().required("CNH é obrigatória"),
+        name: Yup.string().required("Nome é OBrigatório"),
+      });
 
-      const data = { name, driverLicense }
-      await schema.validate(data)
+      const data = { name, driverLicense };
+      await schema.validate(data);
 
       await updateUser({
         ...user,
         name,
         driver_license: driverLicense,
-        avatar
-      })
+        avatar,
+      });
 
-      Alert.alert('Perfil atualizado')
+      Alert.alert("Perfil atualizado");
     } catch (error) {
-      if(error instanceof Yup.ValidationError) {
-        Alert.alert('Opa', error.message)
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert("Opa", error.message);
       }
 
-      Alert.alert('Não foi possivel atualizar o perfil')
+      Alert.alert("Não foi possivel atualizar o perfil");
     }
+  }
+
+  async function handleSignOut() {
+    Alert.alert(
+      "Tem certeza?",
+      "Se você sair, irá precisar de internet para conectar-se novamente",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => {},
+        },
+        {
+          text: "Sair",
+          onPress: () => signOut(),
+        },
+      ]
+    );
   }
 
   return (
@@ -75,13 +92,13 @@ export const Profile: React.FC = () => {
             <S.HeaderTop>
               <BackButton color={theme.colors.shape} onPress={handleBack} />
               <S.HeaderTitle>Editar Perfil</S.HeaderTitle>
-              <S.LogoutButton onPress={signOut}>
+              <S.LogoutButton onPress={handleSignOut}>
                 <Feather name="power" size={24} color={theme.colors.shape} />
               </S.LogoutButton>
             </S.HeaderTop>
 
             <S.PhotoContainer>
-              { !!avatar && <S.Photo source={{ uri: avatar }} /> }
+              {!!avatar && <S.Photo source={{ uri: avatar }} />}
               <S.PhotoButton onPress={handleAvatarSelect}>
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </S.PhotoButton>
@@ -153,10 +170,7 @@ export const Profile: React.FC = () => {
                 />
               </S.Section>
             )}
-            <Button 
-              title="Salvar alterações"
-              onPress={handleProfileUpdate}
-            />
+            <Button title="Salvar alterações" onPress={handleProfileUpdate} />
           </S.Content>
         </S.Container>
       </TouchableWithoutFeedback>
