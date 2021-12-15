@@ -20,6 +20,7 @@ interface SignInCredentials {
 interface AuthContextData {
     user: User
     signIn: (credentials: SignInCredentials) => Promise<void>
+    signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -43,7 +44,6 @@ const AuthProvider: React.FC = ({ children }) => {
     }, [])
 
     async function signIn({ email, password }: SignInCredentials) {
-        try {
             const response = await api.post('/sessions', { email, password })
             const { token, user } = response.data
             database
@@ -61,13 +61,20 @@ const AuthProvider: React.FC = ({ children }) => {
                     newUser.token = token
                 })
             })
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
+    }
+
+    async function signOut() {
+        const userCollection = database.get<ModelUser>('users')
+        await database.write(async () => {
+            const userSelected = await userCollection.find(data.id)
+            await userSelected.destroyPermanently()
+        })
+
+        setData({} as User)
     }
 
     return (
-        <AuthContext.Provider value={{ user: data, signIn }}>
+        <AuthContext.Provider value={{ user: data, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     )
