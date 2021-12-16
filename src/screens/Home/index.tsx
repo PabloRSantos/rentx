@@ -51,7 +51,6 @@ export const Home: React.FC = () => {
         const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
 
         const { changes, latestVersion } = response.data
-        console.log(latestVersion)
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {

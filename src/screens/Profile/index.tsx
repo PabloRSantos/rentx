@@ -12,10 +12,12 @@ import { useAuth } from "../../hooks/auth";
 import * as ImagePicker from "expo-image-picker";
 import { Button } from "../../components/Button";
 import * as Yup from "yup";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 export const Profile: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const netInfo = useNetInfo()
   const { user, signOut, updateUser } = useAuth();
   const [avatar, setAvatar] = useState(user.avatar);
   const [name, setName] = useState(user.name);
@@ -84,6 +86,14 @@ export const Profile: React.FC = () => {
     );
   }
 
+  function handleOptionChange(option: 'dataEdit' | 'passwordEdit') {
+    if(netInfo.isConnected === false && option === 'passwordEdit') {
+      return Alert.alert('Você está Offline', 'Para mudar a senha, conecte-se a Internet')
+    }
+
+    setOption(option)
+  }
+
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -108,7 +118,7 @@ export const Profile: React.FC = () => {
           <S.Content style={{ marginBottom: useBottomTabBarHeight() }}>
             <S.Options>
               <S.Option
-                onPress={() => setOption("dataEdit")}
+                onPress={() => handleOptionChange("dataEdit")}
                 active={option === "dataEdit"}
               >
                 <S.OptionTitle active={option === "dataEdit"}>
@@ -116,7 +126,7 @@ export const Profile: React.FC = () => {
                 </S.OptionTitle>
               </S.Option>
               <S.Option
-                onPress={() => setOption("passwordEdit")}
+                onPress={() => handleOptionChange("passwordEdit")}
                 active={option === "passwordEdit"}
               >
                 <S.OptionTitle active={option === "passwordEdit"}>

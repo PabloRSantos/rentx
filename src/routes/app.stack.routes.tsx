@@ -17,11 +17,11 @@ declare global {
     interface RootParamList {
       Home: undefined;
       CarDetails: { car: Car };
-      Scheduling: { car: CarDTO };
+      Scheduling: { car: Car };
       Confirmation: { title: string; message: string; nextScreenRoute?: string };
       MyCars: undefined;
       SchedulingDetails: {
-        car: CarDTO;
+        car: Car;
         dates: string[];
         formattedDates: string[];
       };
