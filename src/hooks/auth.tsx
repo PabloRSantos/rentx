@@ -19,6 +19,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
     user: User
+    loading: boolean
     signIn: (credentials: SignInCredentials) => Promise<void>
     signOut: () => Promise<void>
     updateUser: (user: User) => Promise<void>
@@ -29,6 +30,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 const AuthProvider: React.FC = ({ children }) => {
     const [data, setData] = useState<User>({} as User)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         async function loadUserData() {
@@ -40,6 +42,7 @@ const AuthProvider: React.FC = ({ children }) => {
                 api.defaults.headers.common.authorization = `Bearer ${userData.token}`
                 setData(userData)
             }
+            setLoading(false)
         }
         loadUserData()
     }, [])
@@ -89,7 +92,7 @@ const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser }}>
+        <AuthContext.Provider value={{ user: data, signIn, signOut, updateUser, loading }}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,10 +1,10 @@
 import React from 'react';
 import * as S from './styles';
 import { RectButtonProps } from 'react-native-gesture-handler';
-import { CarDTO } from '../../dtos/CarDTO';
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { Car as ModelCar } from '../../database/model/Car';
 interface Props extends RectButtonProps {
-  data: CarDTO
+  data: ModelCar
 }
 
 export const Car: React.FC<Props> = ({ data, ...rest }) => {

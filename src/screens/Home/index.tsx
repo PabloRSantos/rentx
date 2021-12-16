@@ -6,15 +6,17 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { Car } from "../../components/Car";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
-import { CarDTO } from "../../dtos/CarDTO";
 import { LoadAnimation } from "../../components/LoadAnimation";
 import { useNetInfo } from '@react-native-community/netinfo'
+import { synchronize } from '@nozbe/watermelondb/sync'
+import { database } from "../../database";
+import { Car as ModelCar } from "../../database/model/Car";
 
 // const ButtonAnimated = Animated.createAnimatedComponent(S.MyCarsButton)
 
 export const Home: React.FC = () => {
   const navigation = useNavigation();
-  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
   const netInfo = useNetInfo()
   // const positionY = useSharedValue(0)
@@ -42,14 +44,35 @@ export const Home: React.FC = () => {
   //   }
   // })
 
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+
+        const { changes, latestVersion } = response.data
+        console.log(latestVersion)
+        return { changes, timestamp: latestVersion }
+      },
+      pushChanges: async ({ changes }) => {
+        const user = changes.users
+        await api.post('/users/sync', user)
+      }
+    })
+  }
+
+  useEffect(() => {
+    netInfo.isConnected && offlineSynchronize()
+  }, [netInfo.isConnected])
+
   useEffect(() => {
     let isMounted = true
     
     async function fetchCars() {
       try {
-        const response = await api.get("/cars");
-        console.log(isMounted)
-        isMounted && setCars(response.data);
+        const carCollection = database.get<ModelCar>('cars')
+        const cars = await carCollection.query().fetch()
+        isMounted && setCars(cars);
       } catch (error) {
         console.log(error);
       } finally {
@@ -63,15 +86,7 @@ export const Home: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if(netInfo.isConnected) {
-      Alert.alert('Você está On-Line')
-    } else {
-      Alert.alert('Você está Of-Line')
-    }
-  }, [netInfo.isConnected])
-
-  function handleCarDetails(car: CarDTO) {
+  function handleCarDetails(car: ModelCar) {
     navigation.navigate("CarDetails", { car });
   }
 
