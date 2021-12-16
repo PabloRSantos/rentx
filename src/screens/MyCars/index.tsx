@@ -1,28 +1,29 @@
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, StatusBar } from "react-native";
 import { useTheme } from "styled-components/native";
 import { BackButton } from "../../components/BackButton";
 import { Car } from "../../components/Car";
-import { CarDTO } from "../../dtos/CarDTO";
 import { api } from "../../services/api";
 import * as S from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { LoadAnimation } from "../../components/LoadAnimation";
+import { Car as ModelCar } from "../../database/model/Car";
+import { parseISO, format } from "date-fns";
 
-interface CarProps {
-  id: string;
-  user_id: string;
-  car: CarDTO;
-  startDate: string;
-  endDate: string;
+interface DataProps {
+  id: string
+  car: ModelCar
+  start_date: string
+  end_date: string
 }
 
 export const MyCars: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const [cars, setCars] = useState<CarProps[]>([]);
+  const [cars, setCars] = useState<DataProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const screenIsFocus = useIsFocused()
 
   function handleBack() {
     navigation.goBack();
@@ -31,8 +32,16 @@ export const MyCars: React.FC = () => {
   useEffect(() => {
     async function fetchCars() {
       try {
-        const response = await api.get(`schedules_byuser?user_id=1`);
-        setCars(response.data);
+        const response = await api.get<DataProps[]>(`/rentals`);
+
+        const dataFormatted = response.data.map(data => ({
+          id: data.id,
+          car: data.car,
+          start_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
+          end_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
+        }))
+
+        setCars(dataFormatted);
       } catch (error) {
         console.log(error);
       } finally {
@@ -41,7 +50,7 @@ export const MyCars: React.FC = () => {
     }
 
     fetchCars();
-  }, []);
+  }, [screenIsFocus]);
 
   return (
     <S.Container>
@@ -77,14 +86,14 @@ export const MyCars: React.FC = () => {
                 <S.CarFooter>
                   <S.CarFooterTitle>Período</S.CarFooterTitle>
                   <S.CarFooterPeriod>
-                    <S.CarFooterDate>{item.startDate}</S.CarFooterDate>
+                    <S.CarFooterDate>{item.start_date}</S.CarFooterDate>
                     <AntDesign
                       name="arrowright"
                       size={20}
                       color={theme.colors.title}
                       style={{ marginHorizontal: 10 }}
                     />
-                    <S.CarFooterDate>{item.endDate}</S.CarFooterDate>
+                    <S.CarFooterDate>{item.end_date}</S.CarFooterDate>
                   </S.CarFooterPeriod>
                 </S.CarFooter>
               </S.CarWrapper>
